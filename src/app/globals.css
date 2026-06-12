@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+/*
+  AutoReception design tokens
+  ---------------------------------
+  Background : Crisp White (#FFFFFF) / Off-White (#F9FAFB)
+  Primary    : WhatsApp Green (#25D366) — CTAs & accents
+  Headings   : Deep Navy / Slate (#0F172A)
+  Secondary  : Muted Gray (#64748B)
+
+  Accessibility note: white text on #25D366 only reaches ~1.8:1 contrast,
+  so primary buttons use deep-navy bold text on the green (~8.6:1, WCAG AAA).
+*/
+
+@theme {
+  /* Brand — WhatsApp-rooted emerald/green */
+  --color-brand: #25d366;
+  --color-brand-strong: #1ebe5b;
+  --color-brand-deep: #14a44a;
+  --color-brand-darker: #0c7a37;
+  --color-brand-soft: #dcfce7;
+  --color-brand-tint: #f0fdf4;
+
+  /* Surfaces */
+  --color-background: #ffffff;
+  --color-surface: #f6f8fa;
+  --color-surface-2: #eef2f6;
+
+  /* Ink — deeper, richer navy for a premium feel */
+  --color-navy: #0b1220;
+  --color-navy-soft: #131c2e;
+  --color-foreground: #0b1220;
+  --color-muted: #5b6678;
+  --color-muted-soft: #93a0b4;
+
+  /* Lines & states */
+  --color-border: #e4e9ef;
+  --color-input: #e4e9ef;
+  --color-ring: #25d366;
+
+  /* Accent for the "old way" problem card */
+  --color-danger: #ef4444;
+  --color-danger-soft: #fee2e2;
+  --color-danger-tint: #fef2f2;
+
+  /* Radius scale */
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.75rem;
+
+  /* Premium shadows */
+  --shadow-soft: 0 1px 2px rgba(11, 18, 32, 0.04),
+    0 8px 24px -12px rgba(11, 18, 32, 0.12);
+  --shadow-float: 0 24px 60px -24px rgba(11, 18, 32, 0.28);
+  --shadow-brand: 0 18px 40px -16px rgba(37, 211, 102, 0.5);
+
+  /* Font family is wired from next/font in layout.tsx */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Respect users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Consistent, visible focus ring for keyboard users */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Premium reusable surface + brand treatments */
+  .text-gradient-brand {
+    background: linear-gradient(
+      100deg,
+      var(--color-brand-deep),
+      var(--color-brand) 55%,
+      var(--color-brand-strong)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-gradient-brand {
+    background: linear-gradient(
+      135deg,
+      var(--color-brand) 0%,
+      var(--color-brand-strong) 100%
+    );
+  }
+
+  /* Deep navy section background with subtle brand aurora */
+  .bg-navy-aurora {
+    background-color: var(--color-navy);
+    background-image: radial-gradient(
+        60rem 30rem at 15% -10%,
+        rgba(37, 211, 102, 0.18),
+        transparent 60%
+      ),
+      radial-gradient(
+        45rem 28rem at 100% 110%,
+        rgba(37, 211, 102, 0.12),
+        transparent 55%
+      );
+  }
+
+  /* Faint grid backdrop for hero depth */
+  .bg-grid {
+    background-image: linear-gradient(
+        to right,
+        rgba(11, 18, 32, 0.04) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(11, 18, 32, 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(60% 60% at 50% 30%, #000 0%, transparent 80%);
+  }
+
+  .shadow-float {
+    box-shadow: var(--shadow-float);
+  }
+
+  /* Soft pulsing glow used on the live chat demo */
+  @keyframes live-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45);
+    }
+    50% {
+      box-shadow: 0 0 0 5px rgba(37, 211, 102, 0);
+    }
+  }
+  .animate-live-dot {
+    animation: live-glow 2s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-live-dot {
+      animation: none;
+    }
+  }
+}
